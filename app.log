@@ -1,0 +1,43 @@
+nohup: 忽略输入
+INFO:     Started server process [3971036]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 98] error while attempting to bind on address ('0.0.0.0', 9000): [errno 98] address already in use
+INFO:     Waiting for application shutdown.
+ERROR:    Traceback (most recent call last):
+  File "/home/a/miniconda3/lib/python3.13/site-packages/starlette/routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "/home/a/miniconda3/lib/python3.13/contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "/home/a/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/home/a/miniconda3/lib/python3.13/contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "/home/a/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/home/a/miniconda3/lib/python3.13/contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "/home/a/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/home/a/miniconda3/lib/python3.13/contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "/home/a/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/home/a/miniconda3/lib/python3.13/contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "/home/a/miniconda3/lib/python3.13/site-packages/fastapi/routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ~~~~~~~~~~~~~~~~^^^^^
+  File "/home/a/miniconda3/lib/python3.13/contextlib.py", line 221, in __aexit__
+    await anext(self.gen)
+  File "/home/a/ServiceEndFiles/Workspaces/ModelEvaluator/main.py", line 43, in lifespan
+    task_queue.stop_worker()
+    ^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TaskQueue' object has no attribute 'stop_worker'
+
+ERROR:    Application shutdown failed. Exiting.

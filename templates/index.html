@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模型测评系统</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部导航 -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-brain"></i>
+                <span>模型测评系统</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>仪表板</span>
+                </a>
+                <a href="#models" class="nav-item" data-section="models">
+                    <i class="fas fa-robot"></i>
+                    <span>模型管理</span>
+                </a>
+                <a href="#datasets" class="nav-item" data-section="datasets">
+                    <i class="fas fa-database"></i>
+                    <span>数据集</span>
+                </a>
+                <a href="#evaluation" class="nav-item" data-section="evaluation">
+                    <i class="fas fa-chart-line"></i>
+                    <span>测评执行</span>
+                </a>
+                <a href="#records" class="nav-item" data-section="records">
+                    <i class="fas fa-history"></i>
+                    <span>测评记录</span>
+                </a>
+                <a href="#monitoring" class="nav-item" data-section="monitoring">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>系统监控</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 仪表板 -->
+            <section id="dashboard" class="content-section active">
+                <div class="section-header">
+                    <h1><i class="fas fa-tachometer-alt"></i> 系统仪表板</h1>
+                </div>
+                <div class="dashboard-grid">
+                    <!-- 统计卡片 -->
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-models">-</h3>
+                            <p>总模型数</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-datasets">-</h3>
+                            <p>可用数据集</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-evaluations">-</h3>
+                            <p>测评记录</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-cpu"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="gpu-usage">-</h3>
+                            <p>GPU使用率</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 最近活动 -->
+                <div class="recent-activity">
+                    <h2>最近活动</h2>
+                    <div id="recent-activities" class="activity-list">
+                        <!-- 动态加载 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 模型管理 -->
+            <section id="models" class="content-section">
+                <div class="section-header">
+                    <h1><i class="fas fa-robot"></i> 模型管理</h1>
+                    <button id="scan-models" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> 扫描模型
+                    </button>
+                </div>
+                <div class="models-grid" id="models-list">
+                    <!-- 动态加载 -->
+                </div>
+            </section>
+
+            <!-- 数据集 -->
+            <section id="datasets" class="content-section">
+                <div class="section-header">
+                    <h1><i class="fas fa-database"></i> 数据集管理</h1>
+                </div>
+                <div class="datasets-grid" id="datasets-list">
+                    <!-- 动态加载 -->
+                </div>
+            </section>
+
+            <!-- 测评执行 -->
+            <section id="evaluation" class="content-section">
+                <div class="section-header">
+                    <h1><i class="fas fa-chart-line"></i> 测评执行</h1>
+                </div>
+                <div class="evaluation-tabs">
+                    <button class="tab-btn active" data-tab="single">单模型测评</button>
+                    <button class="tab-btn" data-tab="batch">批量测评</button>
+                </div>
+                
+                <!-- 单模型测评 -->
+                <div id="single-evaluation" class="tab-content active">
+                    <div class="form-container">
+                        <form id="single-evaluation-form">
+                            <div class="form-group">
+                                <label for="model-select">选择模型</label>
+                                <select id="model-select" required>
+                                    <option value="">请选择模型</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dataset-input">数据集名称</label>
+                                <input type="text" id="dataset-input" placeholder="输入数据集名称" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="config-json">配置参数 (JSON格式，可选)</label>
+                                <textarea id="config-json" rows="4" placeholder='{"temperature": 0.7}'></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-play"></i> 开始测评
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 批量测评 -->
+                <div id="batch-evaluation" class="tab-content">
+                    <div class="form-container">
+                        <form id="batch-evaluation-form">
+                            <div class="form-group">
+                                <label>选择要测评的模型 (可多选)</label>
+                                <div id="batch-models" class="checkbox-group">
+                                    <!-- 动态加载 -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="batch-dataset-input">数据集名称</label>
+                                <input type="text" id="batch-dataset-input" placeholder="输入数据集名称" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="task-name">任务名称</label>
+                                <input type="text" id="task-name" placeholder="批量测评任务名称">
+                            </div>
+                            <div class="form-group">
+                                <label for="parallel-execution">执行方式</label>
+                                <select id="parallel-execution">
+                                    <option value="true">并行执行</option>
+                                    <option value="false">顺序执行</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-play"></i> 创建批量测评任务
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 任务进度 -->
+                <div class="progress-section">
+                    <h3>测评进度</h3>
+                    <div id="task-progress" class="progress-list">
+                        <!-- 动态加载 -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- 测评记录 -->
+            <section id="records" class="content-section">
+                <div class="section-header">
+                    <h1><i class="fas fa-history"></i> 测评记录</h1>
+                </div>
+                <div class="records-filters">
+                    <input type="text" id="search-input" placeholder="搜索记录...">
+                    <select id="model-type-filter">
+                        <option value="">所有模型类型</option>
+                        <option value="local">本地模型</option>
+                        <option value="api">API模型</option>
+                    </select>
+                    <button id="export-records" class="btn btn-secondary">
+                        <i class="fas fa-download"></i> 导出
+                    </button>
+                </div>
+                <div class="records-table-container">
+                    <table id="records-table" class="data-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>模型名称</th>
+                                <th>数据集</th>
+                                <th>分数</th>
+                                <th>模型类型</th>
+                                <th>状态</th>
+                                <th>执行时间</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- 动态加载 -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- 系统监控 -->
+            <section id="monitoring" class="content-section">
+                <div class="section-header">
+                    <h1><i class="fas fa-heartbeat"></i> 系统监控</h1>
+                    <button id="refresh-monitoring" class="btn btn-primary">
+                        <i class="fas fa-sync-alt"></i> 刷新
+                    </button>
+                </div>
+                
+                <!-- GPU监控 -->
+                <div class="monitoring-grid">
+                    <div class="monitor-card">
+                        <h3>GPU状态</h3>
+                        <div id="gpu-status" class="monitor-content">
+                            <!-- 动态加载 -->
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-card">
+                        <h3>nvidia-smi输出</h3>
+                        <div id="nvidia-smi-output" class="monitor-content">
+                            <!-- 动态加载 -->
+                        </div>
+                    </div>
+                    
+                    <div class="monitor-card">
+                        <h3>GPU使用率图表</h3>
+                        <canvas id="gpu-chart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- 系统信息 -->
+                <div class="monitor-card">
+                    <h3>系统信息</h3>
+                    <div id="system-info" class="monitor-content">
+                        <!-- 动态加载 -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- 模态框 -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">详细信息</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- 动态内容 -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modal-close">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 通知 -->
+    <div id="notifications" class="notifications"></div>
+
+    <!-- 加载动画 -->
+    <div id="loading" class="loading">
+        <div class="spinner"></div>
+        <p>加载中...</p>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
